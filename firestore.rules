@@ -34,7 +34,20 @@ service cloud.firestore {
       allow read: if (isAdmin() || isOperario()) ||
         (isAutoniza() && resource.data.cliente == empresa());
 
+      // Admin/Operario: control total
       allow create, update, delete: if (isAdmin() || isOperario());
+
+      // Autoniza: puede crear/editar unidades SOLO de su empresa, sin cambiar estado/fechas.
+      allow create: if isAutoniza() &&
+        request.resource.data.cliente == empresa();
+
+      allow update: if isAutoniza() &&
+        resource.data.cliente == empresa() &&
+        request.resource.data.cliente == empresa() &&
+        // No puede cambiar el estado ni activar garantía/fecha término.
+        request.resource.data.estado == resource.data.estado &&
+        request.resource.data.fechaTermino == resource.data.fechaTermino &&
+        request.resource.data.garantiaHasta == resource.data.garantiaHasta;
     }
 
     // =========================
@@ -46,7 +59,12 @@ service cloud.firestore {
           get(/databases/$(database)/documents/unidades/$(resource.data.unidadId)).data.cliente == empresa()
         );
 
+      // Admin/Operario: control total
       allow create, update, delete: if (isAdmin() || isOperario());
+
+      // Autoniza: puede crear servicios SOLO para unidades de su empresa.
+      allow create: if isAutoniza() &&
+        get(/databases/$(database)/documents/unidades/$(request.resource.data.unidadId)).data.cliente == empresa();
     }
 
     // =========================
@@ -68,7 +86,10 @@ service cloud.firestore {
     // FACTURAS (ya existe en app)
     // =========================
     match /facturas/{facturaId} {
-      allow read, write: if (isAdmin() || isOperario());
+      allow read: if (isAdmin() || isOperario()) ||
+        (isAutoniza() && resource.data.cliente == empresa());
+
+      allow write: if (isAdmin() || isOperario());
     }
   }
 }

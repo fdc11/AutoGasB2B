@@ -62,11 +62,13 @@ let allMesUnidades = [];
 let currentMesVal  = '';
 let facturasCache  = [];
 let currentFacturaId = null;
+let currentPerfil = null;
 
 // =============================================
 // INIT
 // =============================================
 function initFac(perfil) {
+  currentPerfil = perfil || null;
   populateMonthSelector();
   document.getElementById('monthSelector')?.addEventListener('change', () => loadMes(perfil));
   document.getElementById('btnExcelFac')?.addEventListener('click', exportExcel);
@@ -358,7 +360,7 @@ function bindFacturaModal() {
     try {
       await addDoc(collection(db, 'facturas'), payload);
       close();
-      await loadFacturas(currentMesVal);
+      await loadFacturas(currentMesVal, currentPerfil);
     } catch (err) {
       if (errEl) { errEl.textContent = 'Error al guardar: ' + err.message; errEl.classList.add('show'); }
     } finally {
@@ -452,7 +454,7 @@ function bindDetalleModal() {
         fechaCobro: new Date(),
       });
       close();
-      await loadFacturas(currentMesVal);
+      await loadFacturas(currentMesVal, currentPerfil);
     } catch {
       // En demo: actualizar local
       const idx = facturasCache.findIndex(f => f.id === currentFacturaId);
