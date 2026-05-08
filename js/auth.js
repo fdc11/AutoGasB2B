@@ -107,11 +107,7 @@ btnLogin?.addEventListener('click', async () => {
     const cred = await signInWithEmailAndPassword(auth, email, password);
     const perfil = await ensureUsuarioSession(cred.user);
 
-    if (perfil.rol === 'autoniza') {
-      window.location.href = 'pages/dashboard.html?modo=lectura';
-    } else {
-      window.location.href = 'pages/dashboard.html';
-    }
+    window.location.href = 'pages/dashboard.html';
   } catch (error) {
     setLoading(false);
     if (error?.message === 'Cuenta desactivada') {
@@ -144,8 +140,7 @@ onAuthStateChanged(auth, (user) => {
     // Si ya está logueado, asegura perfil y redirige según rol
     ensureUsuarioSession(user)
       .then((perfil) => {
-        if (perfil.rol === 'autoniza') window.location.href = 'pages/dashboard.html?modo=lectura';
-        else window.location.href = 'pages/dashboard.html';
+        window.location.href = 'pages/dashboard.html';
       })
       .catch((err) => {
         // Si está desactivado o sin perfil, forzar cierre y permitir volver a intentar

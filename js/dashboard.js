@@ -620,13 +620,8 @@ function applyAutonizaUX() {
   // Header
   const topTitle = document.querySelector('.topbar-left h1');
   const topSub = document.querySelector('.topbar-left p');
-  if (topTitle) topTitle.textContent = 'Bienvenido, Autoniza — Vista de seguimiento';
-  if (topSub) topSub.textContent = 'Seguimiento de unidades en tiempo real (solo lectura)';
-
-  // Ocultar acciones: registro + facturación
-  document.getElementById('btnNuevaUnidad')?.classList.add('hidden');
-  document.getElementById('nav-registro')?.classList.add('hidden');
-  document.getElementById('nav-facturacion')?.classList.add('hidden');
+  if (topTitle) topTitle.textContent = 'Panel de Unidades — Autoniza';
+  if (topSub) topSub.textContent = 'Registro inicial y seguimiento en tiempo real';
 
   // Deshabilitar modal (UX)
   document.getElementById('modalEstado')?.classList.add('hidden');

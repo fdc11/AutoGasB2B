@@ -15,10 +15,6 @@ onAuthStateChanged(auth, (user) => {
   if (!user) { window.location.href = '../index.html'; return; }
   ensureUsuarioSession(user)
     .then((perfil) => {
-      if (perfil.rol === 'autoniza') {
-        window.location.href = 'dashboard.html?modo=lectura';
-        return;
-      }
       initForm();
     })
     .catch((err) => {

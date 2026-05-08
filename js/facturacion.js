@@ -16,11 +16,7 @@ onAuthStateChanged(auth, (user) => {
   if (!user) { window.location.href = '../index.html'; return; }
   ensureUsuarioSession(user)
     .then((perfil) => {
-      if (perfil.rol === 'autoniza') {
-        window.location.href = 'dashboard.html?modo=lectura';
-        return;
-      }
-      initFac();
+      initFac(perfil);
     })
     .catch((err) => {
       alert(String(err?.message || 'Acceso no autorizado.'));
@@ -70,14 +66,19 @@ let currentFacturaId = null;
 // =============================================
 // INIT
 // =============================================
-function initFac() {
+function initFac(perfil) {
   populateMonthSelector();
-  document.getElementById('monthSelector')?.addEventListener('change', loadMes);
+  document.getElementById('monthSelector')?.addEventListener('change', () => loadMes(perfil));
   document.getElementById('btnExcelFac')?.addEventListener('click', exportExcel);
-  document.getElementById('btnNuevaFactura')?.addEventListener('click', openNuevaFactura);
+  if (perfil?.rol === 'autoniza') {
+    // Autoniza: puede ver facturación, pero no emitir facturas.
+    document.getElementById('btnNuevaFactura')?.classList.add('hidden');
+  } else {
+    document.getElementById('btnNuevaFactura')?.addEventListener('click', openNuevaFactura);
+  }
   bindFacturaModal();
   bindDetalleModal();
-  loadMes();
+  loadMes(perfil);
 }
 
 // =============================================
@@ -103,7 +104,7 @@ function populateMonthSelector() {
 // =============================================
 // CARGAR MES
 // =============================================
-async function loadMes() {
+async function loadMes(perfil) {
   const mesVal = document.getElementById('monthSelector')?.value;
   if (!mesVal) return;
   currentMesVal = mesVal;
@@ -134,7 +135,7 @@ async function loadMes() {
 
   updateKPIs(unidades);
   renderTabla(unidades, mesVal);
-  await loadFacturas(mesVal);
+  await loadFacturas(mesVal, perfil);
 }
 
 // =============================================
@@ -210,16 +211,21 @@ function renderTabla(unidades, mesVal) {
 // =============================================
 // CARGAR FACTURAS
 // =============================================
-async function loadFacturas(mesVal) {
+async function loadFacturas(mesVal, perfil) {
   const [year, month] = mesVal.split('-').map(Number);
   let facturas = [];
 
   try {
-    const q = query(
-      collection(db, 'facturas'),
+    const filters = [
       where('mes', '==', month),
-      where('anio', '==', year)
-    );
+      where('anio', '==', year),
+    ];
+    // Para autoniza, la query debe filtrar por cliente para cumplir rules.
+    if (perfil?.rol === 'autoniza' && perfil?.empresa) {
+      filters.push(where('cliente', '==', perfil.empresa));
+    }
+
+    const q = query(collection(db, 'facturas'), ...filters);
     const snap = await getDocs(q);
     snap.forEach(d => facturas.push({ id: d.id, ...d.data() }));
   } catch {

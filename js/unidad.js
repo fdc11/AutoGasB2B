@@ -16,12 +16,6 @@ onAuthStateChanged(auth, (user) => {
   if (!user) { window.location.href = '../index.html'; return; }
   ensureUsuarioSession(user)
     .then((perfil) => {
-      if (perfil.rol === 'autoniza') {
-        // Autoniza: ocultar acciones de escritura (solo UX; las rules bloquean server-side).
-        document.getElementById('btnAddService')?.classList.add('hidden');
-        document.getElementById('btnEditarDatos')?.classList.add('hidden');
-        disableWriteUX = true;
-      }
       loadUnidad();
     })
     .catch((err) => {
