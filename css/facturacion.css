@@ -13,6 +13,28 @@
   gap: 12px;
 }
 
+.section-accordion {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.section-head {
+  width: 100%;
+  border: none;
+  background: #f8fafc;
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+.section-body { display: none; padding: 12px; }
+.section-accordion.open .section-body { display: block; }
+
 .fac-selector-group {
   display: flex;
   align-items: center;

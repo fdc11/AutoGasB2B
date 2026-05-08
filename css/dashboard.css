@@ -12,6 +12,41 @@
   animation: fadeInDown 0.4s var(--ease) both;
 }
 
+.section-accordion {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--surface);
+}
+.section-head {
+  width: 100%;
+  border: none;
+  background: #f8fafc;
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+}
+.section-body { display: none; padding: 12px; }
+.section-accordion.open .section-body { display: block; }
+
+.advanced-filters {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  background: #fdfdfd;
+}
+
+.quick-panel-box { max-width: 720px; }
+.quick-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
 .kpi-card {
   background: var(--surface);
   border: 1px solid var(--border);
@@ -213,6 +248,9 @@
   color: var(--text);
   vertical-align: middle;
 }
+
+.data-table.compact tbody td { padding: 8px 10px; font-size: 0.78rem; }
+.data-table.compact thead th { padding: 8px 10px; font-size: 0.62rem; }
 
 .data-table tbody tr:last-child td { border-bottom: none; }
 

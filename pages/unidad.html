@@ -20,25 +20,120 @@
     </aside>
     <main class="main-content">
       <header class="topbar">
-        <div class="topbar-left"><h1>Ficha de Unidad</h1><p id="topVin">—</p></div>
-        <div class="topbar-right"><a href="dashboard.html" class="btn-secondary">Volver</a></div>
+        <div class="topbar-left">
+          <h1>Ficha de Unidad</h1>
+          <p id="topVin">—</p>
+        </div>
+        <div class="topbar-right">
+          <button id="btnEditar" class="btn-primary">Editar Datos</button>
+          <a href="dashboard.html" class="btn-secondary">Volver</a>
+        </div>
       </header>
       <div class="page-body">
-        <div class="detail-card">
-          <div class="detail-card-header"><span class="detail-card-title">Snapshot operativo completo</span></div>
-          <div class="detail-card-body">
-            <pre id="snapshotView" style="white-space:pre-wrap;margin:0;"></pre>
+        <div class="hero-strip" id="heroStrip">
+          <div class="hero-main">
+            <h2 id="heroTitle">Unidad</h2>
+            <p id="heroSubtitle">Cargando datos...</p>
+          </div>
+          <div class="hero-badges">
+            <span class="badge" id="chipEstado">—</span>
+            <span class="badge" id="chipTipo">—</span>
+            <span class="badge" id="chipPago">—</span>
           </div>
         </div>
+
+        <div class="unit-grid">
+          <div class="detail-card section-card">
+            <div class="detail-card-header">
+              <span class="detail-card-title">Resumen rápido</span>
+            </div>
+            <div class="kpi-mini-grid">
+              <div class="kpi-mini"><span class="kpi-mini-label">Folio</span><span class="kpi-mini-value" id="sumFolio">—</span></div>
+              <div class="kpi-mini"><span class="kpi-mini-label">Sede</span><span class="kpi-mini-value" id="sumSede">—</span></div>
+              <div class="kpi-mini"><span class="kpi-mini-label">Concesionaria</span><span class="kpi-mini-value" id="sumConcesionaria">—</span></div>
+              <div class="kpi-mini"><span class="kpi-mini-label">Técnico</span><span class="kpi-mini-value" id="sumTecnico">—</span></div>
+            </div>
+          </div>
+
+          <div class="detail-card section-card">
+            <div class="detail-card-header">
+              <span class="detail-card-title">Historial / Timeline</span>
+              <div style="display:flex; gap:8px;">
+                <button class="btn-secondary btn-chip" data-filter="all">Todo</button>
+                <button class="btn-secondary btn-chip" data-filter="estado">Estado</button>
+                <button class="btn-secondary btn-chip" data-filter="pago">Pago</button>
+              </div>
+            </div>
+            <div class="detail-card-body">
+              <div id="timeline"></div>
+              <div class="event-box">
+                <input id="evtTipo" class="form-input" placeholder="Tipo de evento (ej: Cambio de estado)" />
+                <input id="evtTecnico" class="form-input" placeholder="Técnico" />
+                <textarea id="evtObs" class="form-input form-textarea" placeholder="Observaciones"></textarea>
+                <button id="btnAgregarEvento" class="btn-primary">Agregar evento</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div class="detail-card">
-          <div class="detail-card-header"><span class="detail-card-title">Timeline / Historial de servicios</span></div>
+          <div class="detail-card-header">
+            <span class="detail-card-title">Ficha completa por secciones</span>
+            <button id="btnExpandAll" class="btn-secondary">Expandir / Contraer</button>
+          </div>
           <div class="detail-card-body">
-            <div id="timeline"></div>
-            <div style="display:grid;gap:8px;margin-top:12px;">
-              <input id="evtTipo" class="form-input" placeholder="Tipo de evento" />
-              <input id="evtTecnico" class="form-input" placeholder="Técnico" />
-              <textarea id="evtObs" class="form-input form-textarea" placeholder="Observaciones"></textarea>
-              <button id="btnAgregarEvento" class="btn-primary">Agregar evento</button>
+            <div class="accordion" id="sectionsAccordion"></div>
+          </div>
+        </div>
+
+        <div class="modal-overlay hidden" id="modalEditarUnidad">
+          <div class="modal-box modal-lg">
+            <div class="modal-header">
+              <div>
+                <div class="modal-title">Editar Unidad</div>
+                <div class="modal-subtitle">Actualiza campos y registra cambios en timeline</div>
+              </div>
+              <button class="modal-close" id="btnCloseEditar">X</button>
+            </div>
+            <div class="edit-tabs">
+              <button class="btn-secondary active" data-tab="tab-servicio">Servicio</button>
+              <button class="btn-secondary" data-tab="tab-vehiculo">Vehículo</button>
+              <button class="btn-secondary" data-tab="tab-finanzas">Finanzas</button>
+            </div>
+            <div class="edit-panel active" id="tab-servicio">
+              <div class="edit-grid">
+                <input class="form-input" id="ed_folio" placeholder="Folio" />
+                <input class="form-input" id="ed_estado" placeholder="Estado" />
+                <input class="form-input" id="ed_sede" placeholder="Sede" />
+                <input class="form-input" id="ed_tipoConversion" placeholder="Tipo Conversión" />
+                <input class="form-input" id="ed_concesionaria" placeholder="Concesionaria" />
+                <input class="form-input" id="ed_tecnico" placeholder="Técnico" />
+              </div>
+            </div>
+            <div class="edit-panel" id="tab-vehiculo">
+              <div class="edit-grid">
+                <input class="form-input" id="ed_placa" placeholder="Placa" />
+                <input class="form-input" id="ed_marca" placeholder="Marca" />
+                <input class="form-input" id="ed_modelo" placeholder="Modelo" />
+                <input class="form-input" id="ed_color" placeholder="Color" />
+                <input class="form-input" id="ed_motor" placeholder="Motor" />
+                <input class="form-input" id="ed_vinSerie" placeholder="VIN/SERIE" />
+              </div>
+            </div>
+            <div class="edit-panel" id="tab-finanzas">
+              <div class="edit-grid">
+                <input class="form-input" id="ed_costo" placeholder="Costo" />
+                <input class="form-input" id="ed_facturaNumero" placeholder="Factura" />
+                <input class="form-input" id="ed_estadoPago" placeholder="Estado Pago" />
+                <input class="form-input" id="ed_pago" placeholder="Pago" />
+                <input class="form-input" id="ed_entrega" placeholder="Entrega" />
+                <input class="form-input" id="ed_fechaEntrega" type="date" placeholder="Fecha Entrega" />
+              </div>
+            </div>
+            <div class="diff-preview" id="diffPreview">Sin cambios aún.</div>
+            <div class="modal-footer">
+              <button class="btn-secondary" id="btnCancelEditar">Cancelar</button>
+              <button class="btn-primary" id="btnGuardarEditar">Guardar Cambios</button>
             </div>
           </div>
         </div>

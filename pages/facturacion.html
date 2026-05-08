@@ -24,11 +24,19 @@
         <div class="topbar-right"><button id="btnNuevaFactura" class="btn-primary">Nueva Factura</button></div>
       </header>
       <div class="page-body">
+        <div class="section-accordion open" id="facSecResumen">
+          <button class="section-head" data-sec-toggle="facSecResumen">Resumen de cobranza <span>▾</span></button>
+          <div class="section-body">
         <div class="fac-kpi-grid">
           <div class="fac-kpi-card"><div class="fac-kpi-icon brand">$</div><div class="fac-kpi-body"><span id="kpiPendMonto" class="fac-kpi-value">0</span><span class="fac-kpi-label">Monto Pendiente</span></div></div>
           <div class="fac-kpi-card"><div class="fac-kpi-icon blue">#</div><div class="fac-kpi-body"><span id="kpiPendCant" class="fac-kpi-value">0</span><span class="fac-kpi-label">Facturas Pendientes</span></div></div>
           <div class="fac-kpi-card"><div class="fac-kpi-icon green">OK</div><div class="fac-kpi-body"><span id="kpiPagadas" class="fac-kpi-value">0</span><span class="fac-kpi-label">Facturas Pagadas</span></div></div>
         </div>
+          </div>
+        </div>
+        <div class="section-accordion open" id="facSecListado">
+          <button class="section-head" data-sec-toggle="facSecListado">Listado de pendientes <span>▾</span></button>
+          <div class="section-body">
         <div class="fac-table-card">
           <div class="fac-table-header"><span class="fac-table-title">Listado de pendientes</span></div>
           <div class="fac-table-scroll">
@@ -40,6 +48,8 @@
               </thead>
               <tbody id="facTableBody"></tbody>
             </table>
+          </div>
+        </div>
           </div>
         </div>
       </div>

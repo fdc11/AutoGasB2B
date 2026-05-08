@@ -1,6 +1,6 @@
 import { db, auth } from './firebase.js';
 import {
-  collection, onSnapshot, query, orderBy
+  collection, onSnapshot, query, orderBy, doc, updateDoc, serverTimestamp
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore.js";
 import { onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import { ensureUsuarioSession } from './userSession.js';
@@ -14,6 +14,8 @@ onAuthStateChanged(auth, (user) => {
 let allUnidades = [];
 let filteredList = [];
 let ajustes = null;
+let compactMode = false;
+let selectedUnidad = null;
 
 async function initDashboard() {
   ajustes = await getAjustes();
@@ -21,6 +23,8 @@ async function initDashboard() {
   bindFilters();
   hydrateFilters();
   document.getElementById('btnExcel')?.addEventListener('click', exportExcel);
+  bindInteractiveActions();
+  bindQuickPanel();
 
   const q = query(collection(db, 'unidades'), orderBy('actualizadoAt', 'desc'));
   onSnapshot(q, (snap) => {
@@ -28,6 +32,39 @@ async function initDashboard() {
     snap.forEach((d) => allUnidades.push({ id: d.id, ...d.data() }));
     applyFilters();
     updateKpis();
+  });
+}
+
+function bindInteractiveActions() {
+  document.getElementById('btnToggleDensity')?.addEventListener('click', () => {
+    compactMode = !compactMode;
+    document.querySelector('.data-table')?.classList.toggle('compact', compactMode);
+    setText('btnToggleDensity', compactMode ? 'Vista Cómoda' : 'Vista Compacta');
+  });
+  document.getElementById('btnClearFilters')?.addEventListener('click', () => {
+    ['searchInput', 'filterSede', 'filterEstado', 'filterTipo', 'filterMes', 'filterAnio', 'filterConcesionariaText', 'filterTecnicoText', 'filterPagoRapido'].forEach((id) => {
+      const el = document.getElementById(id);
+      if (!el) return;
+      if (id === 'searchInput') el.value = '';
+      else if (id === 'filterConcesionariaText' || id === 'filterTecnicoText') el.value = '';
+      else el.value = 'all';
+    });
+    applyFilters();
+  });
+  document.getElementById('btnMoreFilters')?.addEventListener('click', () => {
+    document.getElementById('advancedFilters')?.classList.toggle('hidden');
+  });
+  document.querySelectorAll('[data-sec-toggle]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-sec-toggle');
+      document.getElementById(id)?.classList.toggle('open');
+    });
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key.toLowerCase() === 'f' && (e.ctrlKey || e.metaKey)) {
+      e.preventDefault();
+      document.getElementById('searchInput')?.focus();
+    }
   });
 }
 
@@ -56,7 +93,7 @@ function fillFilter(id, values) {
 }
 
 function bindFilters() {
-  ['searchInput', 'filterSede', 'filterEstado', 'filterTipo', 'filterMes', 'filterAnio']
+  ['searchInput', 'filterSede', 'filterEstado', 'filterTipo', 'filterMes', 'filterAnio', 'filterConcesionariaText', 'filterTecnicoText', 'filterPagoRapido']
     .forEach((id) => {
       document.getElementById(id)?.addEventListener('input', applyFilters);
       document.getElementById(id)?.addEventListener('change', applyFilters);
@@ -70,6 +107,9 @@ function applyFilters() {
   const tipo = val('filterTipo');
   const mes = val('filterMes');
   const anio = val('filterAnio');
+  const concesionariaText = textVal('filterConcesionariaText').toLowerCase();
+  const tecnicoText = textVal('filterTecnicoText').toLowerCase();
+  const pagoRapido = val('filterPagoRapido');
 
   const anios = new Set();
   const meses = new Set();
@@ -87,7 +127,10 @@ function applyFilters() {
       (estado === 'all' || u.estado === estado) &&
       (tipo === 'all' || u.tipoConversion === tipo) &&
       (mes === 'all' || String(u.mes) === mes) &&
-      (anio === 'all' || String(u.anio) === anio);
+      (anio === 'all' || String(u.anio) === anio) &&
+      (!concesionariaText || String(u.concesionaria || '').toLowerCase().includes(concesionariaText)) &&
+      (!tecnicoText || String(u.tecnico || '').toLowerCase().includes(tecnicoText)) &&
+      (pagoRapido === 'all' || (pagoRapido === 'pendiente' ? String(u.estadoPago || '').toLowerCase().includes('pend') : !String(u.estadoPago || '').toLowerCase().includes('pend')));
   });
   renderTable();
 }
@@ -116,7 +159,42 @@ function renderTable() {
       <td>${u.costo || ''}</td><td>${u.facturaNumero || ''}</td><td>${u.estadoPago || ''}</td><td>${fmtDate(u.fechaEntrega)}</td>
     </tr>
   `).join('');
-  tbody.querySelectorAll('tr[data-id]').forEach((tr) => tr.addEventListener('click', () => window.location.href = `unidad.html?id=${tr.dataset.id}`));
+  tbody.querySelectorAll('tr[data-id]').forEach((tr) => tr.addEventListener('click', () => openQuickPanel(tr.dataset.id)));
+}
+
+function openQuickPanel(id) {
+  selectedUnidad = allUnidades.find((u) => u.id === id);
+  if (!selectedUnidad) return;
+  setText('qpVin', selectedUnidad.vin || selectedUnidad.id);
+  ['estado', 'tecnico', 'facturaNumero', 'estadoPago', 'sede', 'concesionaria'].forEach((k) => {
+    const el = document.getElementById(`qp_${k}`);
+    if (el) el.value = selectedUnidad[k] || '';
+  });
+  document.getElementById('quickPanel')?.classList.remove('hidden');
+}
+
+function bindQuickPanel() {
+  const close = () => document.getElementById('quickPanel')?.classList.add('hidden');
+  document.getElementById('qpClose')?.addEventListener('click', close);
+  document.getElementById('quickPanel')?.addEventListener('click', (e) => { if (e.target.id === 'quickPanel') close(); });
+  document.getElementById('qpGoFicha')?.addEventListener('click', () => {
+    if (!selectedUnidad) return;
+    window.location.href = `unidad.html?id=${selectedUnidad.id}`;
+  });
+  document.getElementById('qpSave')?.addEventListener('click', async () => {
+    if (!selectedUnidad) return;
+    const updates = {
+      estado: textVal('qp_estado'),
+      tecnico: textVal('qp_tecnico'),
+      facturaNumero: textVal('qp_facturaNumero'),
+      estadoPago: textVal('qp_estadoPago'),
+      sede: textVal('qp_sede'),
+      concesionaria: textVal('qp_concesionaria'),
+      actualizadoAt: serverTimestamp(),
+    };
+    await updateDoc(doc(db, 'unidades', selectedUnidad.id), updates);
+    close();
+  });
 }
 
 function updateKpis() {

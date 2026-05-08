@@ -1,6 +1,103 @@
 /* =============================================
    AUTOGAS B2B — UNIDAD CSS
    ============================================= */
+.hero-strip {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  background: linear-gradient(135deg, rgba(232, 24, 26, 0.12), rgba(232, 24, 26, 0.02));
+  border: 1px solid rgba(232, 24, 26, 0.2);
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+.hero-main h2 { font-family: 'Barlow Condensed', sans-serif; font-size: 1.5rem; margin: 0; }
+.hero-main p { margin: 2px 0 0; color: var(--muted); }
+.hero-badges { display: flex; gap: 8px; flex-wrap: wrap; }
+
+.unit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 16px;
+}
+.section-card { min-height: 190px; }
+
+.kpi-mini-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 14px;
+}
+.kpi-mini {
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 10px;
+  background: #fff;
+}
+.kpi-mini-label {
+  display: block;
+  color: var(--muted);
+  font-size: 0.72rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.kpi-mini-value {
+  display: block;
+  margin-top: 4px;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.accordion { display: grid; gap: 10px; }
+.acc-item {
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.acc-head {
+  width: 100%;
+  border: none;
+  background: #f8fafc;
+  text-align: left;
+  padding: 12px 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  cursor: pointer;
+}
+.acc-title { font-family: 'Barlow Condensed', sans-serif; font-weight: 700; text-transform: uppercase; letter-spacing: 0.05em; }
+.acc-body { display: none; padding: 12px; background: #fff; }
+.acc-item.open .acc-body { display: block; }
+.acc-table { width: 100%; border-collapse: collapse; }
+.acc-table td { border-bottom: 1px solid #f1f3f7; padding: 8px 6px; font-size: 0.86rem; }
+.acc-table td:first-child { color: var(--muted); width: 220px; text-transform: uppercase; font-size: 0.72rem; letter-spacing: 0.05em; }
+
+.event-box {
+  display: grid;
+  gap: 8px;
+  margin-top: 12px;
+  border-top: 1px solid var(--border);
+  padding-top: 12px;
+}
+.btn-chip.active { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
+
+.edit-tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+.edit-tabs .btn-secondary.active { background: var(--brand-soft); border-color: var(--brand); color: var(--brand); }
+.edit-panel { display: none; }
+.edit-panel.active { display: block; }
+.edit-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; }
+.diff-preview {
+  margin-top: 12px;
+  border: 1px dashed var(--border-hover);
+  border-radius: 10px;
+  padding: 10px;
+  background: #fafbfd;
+  font-size: 0.82rem;
+  color: var(--text-2);
+  max-height: 160px;
+  overflow: auto;
+}
 
 /* =============================================
    WARRANTY BANNER
@@ -199,13 +296,14 @@
   display: flex;
   gap: 14px;
   position: relative;
-  padding-bottom: 20px;
   background: #fafbfc;
   border: 1px solid var(--border);
   border-radius: 10px;
   padding: 12px;
   margin-bottom: 10px;
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
 }
+.timeline-item:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(16,24,40,0.07); }
 
 .timeline-item:last-child { padding-bottom: 0; }
 
@@ -328,4 +426,12 @@
   letter-spacing: 0.05em;
   color: var(--muted);
   margin-bottom: 5px;
+}
+
+@media (max-width: 1100px) {
+  .unit-grid { grid-template-columns: 1fr; }
+  .edit-grid { grid-template-columns: 1fr 1fr; }
+}
+@media (max-width: 760px) {
+  .edit-grid { grid-template-columns: 1fr; }
 }

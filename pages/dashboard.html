@@ -28,12 +28,21 @@
         </div>
       </header>
       <div class="page-body">
+        <div class="section-accordion open" id="secResumen">
+          <button class="section-head" data-sec-toggle="secResumen">Resumen operativo <span>▾</span></button>
+          <div class="section-body">
         <div class="kpi-grid">
           <div class="kpi-card"><div class="kpi-icon brand">#</div><div class="kpi-body"><span class="kpi-value" id="kpiTotal">0</span><span class="kpi-label">Total Unidades</span></div></div>
           <div class="kpi-card"><div class="kpi-icon blue">P</div><div class="kpi-body"><span class="kpi-value" id="kpiProceso">0</span><span class="kpi-label">En Proceso</span></div></div>
           <div class="kpi-card"><div class="kpi-icon green">$</div><div class="kpi-body"><span class="kpi-value" id="kpiFacturado">0</span><span class="kpi-label">Con Factura</span></div></div>
           <div class="kpi-card"><div class="kpi-icon red">!</div><div class="kpi-body"><span class="kpi-value" id="kpiPendientePago">0</span><span class="kpi-label">Pago Pendiente</span></div></div>
         </div>
+          </div>
+        </div>
+
+        <div class="section-accordion open" id="secControl">
+          <button class="section-head" data-sec-toggle="secControl">Control de conversiones <span>▾</span></button>
+          <div class="section-body">
         <div class="data-card">
           <div class="data-card-header">
             <div class="filters-row">
@@ -43,10 +52,24 @@
               <select id="filterTipo" class="filter-select"><option value="all">Tipo conversión</option></select>
               <select id="filterMes" class="filter-select"><option value="all">Mes</option></select>
               <select id="filterAnio" class="filter-select"><option value="all">Año</option></select>
+              <button id="btnMoreFilters" class="btn-secondary">Más Opciones</button>
             </div>
             <div style="display:flex;gap:8px;">
+              <button id="btnToggleDensity" class="btn-secondary">Vista Compacta</button>
+              <button id="btnClearFilters" class="btn-secondary">Limpiar Filtros</button>
               <button id="btnExcel" class="btn-secondary">Exportar Excel</button>
               <a href="facturacion.html" class="btn-secondary">Ver Pendientes</a>
+            </div>
+          </div>
+          <div class="advanced-filters hidden" id="advancedFilters">
+            <div class="filters-row">
+              <input id="filterConcesionariaText" class="form-input" placeholder="Concesionaria contiene..." />
+              <input id="filterTecnicoText" class="form-input" placeholder="Técnico contiene..." />
+              <select id="filterPagoRapido" class="filter-select">
+                <option value="all">Pago (todos)</option>
+                <option value="pendiente">Solo pendiente</option>
+                <option value="pagado">Solo pagado</option>
+              </select>
             </div>
           </div>
           <div class="table-scroll">
@@ -62,9 +85,36 @@
             </table>
           </div>
         </div>
+          </div>
+        </div>
       </div>
     </main>
   </div>
+
+  <div class="modal-overlay hidden" id="quickPanel">
+    <div class="modal-box modal-lg quick-panel-box">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Quick View</div>
+          <div class="modal-subtitle" id="qpVin">VIN —</div>
+        </div>
+        <button class="modal-close" id="qpClose">X</button>
+      </div>
+      <div class="quick-grid">
+        <input id="qp_estado" class="form-input" placeholder="Estado" />
+        <input id="qp_tecnico" class="form-input" placeholder="Técnico" />
+        <input id="qp_facturaNumero" class="form-input" placeholder="Factura" />
+        <input id="qp_estadoPago" class="form-input" placeholder="Estado pago" />
+        <input id="qp_sede" class="form-input" placeholder="Sede" />
+        <input id="qp_concesionaria" class="form-input" placeholder="Concesionaria" />
+      </div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="qpGoFicha">Abrir ficha completa</button>
+        <button class="btn-primary" id="qpSave">Guardar rápido</button>
+      </div>
+    </div>
+  </div>
+
   <script type="module" src="../js/dashboard.js"></script>
 </body>
 </html>

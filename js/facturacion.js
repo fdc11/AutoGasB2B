@@ -19,8 +19,18 @@ let facturas = [];
 
 function initFac() {
   bindModal();
+  bindSections();
   document.getElementById('btnNuevaFactura')?.addEventListener('click', () => showModal(true));
   loadFacturas();
+}
+
+function bindSections() {
+  document.querySelectorAll('[data-sec-toggle]').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-sec-toggle');
+      document.getElementById(id)?.classList.toggle('open');
+    });
+  });
 }
 
 async function loadFacturas() {
