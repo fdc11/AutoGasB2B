@@ -4,14 +4,10 @@
 import { auth } from './firebase.js';
 import {
   signInWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut
+  onAuthStateChanged
 } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-auth.js";
 import {
-  ensureUsuarioSession,
-  getEmpresa,
-  getRol,
-  getUsuario,
+  ensureUsuarioSession
 } from './userSession.js';
 
 // =============================================
@@ -24,11 +20,6 @@ const btnText     = document.getElementById('btnText');
 const btnLoader   = document.getElementById('btnLoader');
 const errorMsg    = document.getElementById('errorMsg');
 const togglePass  = document.getElementById('togglePass');
-
-// =============================================
-// SESIÓN (ROL / EMPRESA)
-// =============================================
-export { ensureUsuarioSession, getEmpresa, getRol, getUsuario };
 
 function setLoginMessage(msg) {
   if (!errorMsg) return;
@@ -105,8 +96,7 @@ btnLogin?.addEventListener('click', async () => {
 
   try {
     const cred = await signInWithEmailAndPassword(auth, email, password);
-    const perfil = await ensureUsuarioSession(cred.user);
-
+    await ensureUsuarioSession(cred.user);
     window.location.href = 'pages/dashboard.html';
   } catch (error) {
     setLoading(false);
@@ -137,15 +127,12 @@ btnLogin?.addEventListener('click', async () => {
 // =============================================
 onAuthStateChanged(auth, (user) => {
   if (user) {
-    // Si ya está logueado, asegura perfil y redirige según rol
     ensureUsuarioSession(user)
-      .then((perfil) => {
+      .then(() => {
         window.location.href = 'pages/dashboard.html';
       })
       .catch((err) => {
-        // Si está desactivado o sin perfil, forzar cierre y permitir volver a intentar
-        if (String(err?.message || '') === 'Cuenta desactivada') setLoginMessage('Cuenta desactivada');
-        else setLoginMessage('Acceso no autorizado. Contacta a tu administrador.');
+        setLoginMessage(String(err?.message || 'No se pudo validar la sesión.'));
       });
   }
 });

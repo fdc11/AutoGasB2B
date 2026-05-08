@@ -1,341 +1,61 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>AutoGas B2B — Dashboard</title>
-  <meta name="description" content="Panel de control de conversiones vehiculares GNV/GLP — AutoGas B2B" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <title>AutoGas B2B — CONTROL DE CONVERSIONES</title>
   <link rel="stylesheet" href="../css/global.css" />
   <link rel="stylesheet" href="../css/dashboard.css" />
-  <!-- SheetJS para exportar Excel -->
   <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
 </head>
-
 <body>
   <div class="app-layout">
-
-    <!-- ======================== SIDEBAR ======================== -->
-    <aside class="sidebar" id="sidebar">
-      <div class="sidebar-header">
-        <div class="logo-container">
-          <img src="../assets/img/AutoGasLogo2.png" alt="AutoGas Logo" class="sidebar-logo"
-            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
-          <div class="logo-fallback" style="display:none;">AG</div>
-          <div class="logo-text">
-            <span class="logo-title">AUTOGAS</span>
-            <span class="logo-subtitle">B2B SYSTEM</span>
-          </div>
-        </div>
-      </div>
-
+    <aside class="sidebar">
+      <div class="sidebar-header"><div class="logo-text"><span class="logo-title">AUTOGAS</span><span class="logo-subtitle">B2B SYSTEM</span></div></div>
       <nav class="sidebar-nav">
-        <span class="nav-section-label">Principal</span>
-        <a href="dashboard.html" class="nav-item active" id="nav-dashboard">
-          <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
-          </svg>
-          Dashboard
-        </a>
-        <a href="registro.html" class="nav-item" id="nav-registro">
-          <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-          </svg>
-          Nueva Unidad
-        </a>
-
-        <span class="nav-section-label">Reportes</span>
-        <a href="facturacion.html" class="nav-item" id="nav-facturacion">
-          <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" />
-          </svg>
-          Facturación
-        </a>
-
-        <a href="admin.html" class="nav-item sidebar-link hidden" id="link-admin">
-          <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor" aria-hidden="true">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 3l7 4v6c0 5-3 8-7 8s-7-3-7-8V7l7-4z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 11v3m0 3h.01" />
-          </svg>
-          Panel Admin
-        </a>
+        <a href="dashboard.html" class="nav-item active">CONTROL DE CONVERSIONES</a>
+        <a href="registro.html" class="nav-item">Nueva Unidad</a>
+        <a href="facturacion.html" class="nav-item">Facturas / Pendientes</a>
+        <a href="ajustes.html" class="nav-item">Ajustes</a>
       </nav>
-
-      <div class="sidebar-footer">
-        <button id="btnLogout" class="btn-logout">
-          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
-          </svg>
-          Cerrar Sesión
-        </button>
-      </div>
+      <div class="sidebar-footer"><button id="btnLogout" class="btn-logout">Cerrar Sesión</button></div>
     </aside>
-
-    <!-- ======================== MAIN ======================== -->
     <main class="main-content">
-
-      <!-- TOPBAR -->
       <header class="topbar">
-        <div class="topbar-left">
-          <h1>Control de Unidades</h1>
-          <p>Conversiones GNV/GLP en tiempo real</p>
-        </div>
-        <div class="topbar-center">
-          <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          <span class="clock-display" id="clockDisplay">—</span>
-        </div>
-        <div class="topbar-right">
-          <div class="user-chip">
-            <div class="avatar" id="userAvatar">AG</div>
-            <div class="user-info">
-              <span class="user-name" id="userName">Cargando...</span>
-              <span class="user-role" id="userRole">—</span>
-            </div>
-          </div>
-        </div>
+        <div class="topbar-left"><h1>CONTROL DE CONVERSIONES</h1><p>Seguimiento operativo AutoGas</p></div>
       </header>
-
-      <!-- PAGE BODY -->
       <div class="page-body">
-
-        <!-- KPI CARDS -->
-        <div class="kpi-grid">
-          <div class="kpi-card">
-            <div class="kpi-icon brand">
-              <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
-              </svg>
-            </div>
-            <div class="kpi-body">
-              <span class="kpi-value" id="kpiTotal">—</span>
-              <span class="kpi-label">Total Registradas</span>
-            </div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-icon green">
-              <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-              </svg>
-            </div>
-            <div class="kpi-body">
-              <span class="kpi-value" id="kpiGarantia">—</span>
-              <span class="kpi-label">Con Garantía Activa</span>
-            </div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-icon amber">
-              <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-              </svg>
-            </div>
-            <div class="kpi-body">
-              <span class="kpi-value" id="kpiProceso">—</span>
-              <span class="kpi-label">En Proceso / Revisión</span>
-            </div>
-          </div>
-          <div class="kpi-card">
-            <div class="kpi-icon red">
-              <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-              </svg>
-            </div>
-            <div class="kpi-body">
-              <span class="kpi-value" id="kpiSinGarantia">—</span>
-              <span class="kpi-label">Sin / Garantía Vencida</span>
-            </div>
-          </div>
-        </div>
-
-        <!-- DATA CARD -->
         <div class="data-card">
-
-          <!-- HEADER: Filtros + Acciones -->
           <div class="data-card-header">
             <div class="filters-row">
-              <div class="search-wrap">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-                </svg>
-                <input type="text" id="searchInput" placeholder="Buscar por VIN, placa o cliente..." autocomplete="off" />
-              </div>
-              <select id="filterEstado" class="filter-select">
-                <option value="all">Todos los estados</option>
-                <option value="en_proceso">En Proceso</option>
-                <option value="revision">En Revisión</option>
-                <option value="finalizado">Finalizado</option>
-              </select>
-              <select id="filterSubservicio" class="filter-select">
-                <option value="all">GNV y GLP</option>
-                <option value="gnv">Solo GNV</option>
-                <option value="glp">Solo GLP</option>
-              </select>
-              <select id="filterCliente" class="filter-select">
-                <option value="all">Todos los clientes</option>
-                <option value="AUTONIZA">AUTONIZA</option>
-              </select>
-              <select id="filterGarantia" class="filter-select">
-                <option value="all">Garantía (todas)</option>
-                <option value="activa">Con garantía</option>
-                <option value="sin">Sin garantía</option>
-              </select>
+              <div class="search-wrap"><input id="searchInput" type="text" placeholder="Buscar por VIN / placa / folio / concesionaria" /></div>
+              <select id="filterSede" class="filter-select"><option value="all">Sede</option></select>
+              <select id="filterEstado" class="filter-select"><option value="all">Estado</option></select>
+              <select id="filterTipo" class="filter-select"><option value="all">Tipo conversión</option></select>
+              <select id="filterMes" class="filter-select"><option value="all">Mes</option></select>
+              <select id="filterAnio" class="filter-select"><option value="all">Año</option></select>
             </div>
-            <div style="display:flex;gap:8px;flex-shrink:0;">
-              <button id="btnExcel" class="btn-secondary">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-                </svg>
-                Exportar Excel
-              </button>
-              <a href="registro.html" class="btn-primary" id="btnNuevaUnidad">
-                <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                </svg>
-                Nueva Unidad
-              </a>
+            <div style="display:flex;gap:8px;">
+              <button id="btnExcel" class="btn-secondary">Exportar Excel</button>
+              <a href="registro.html" class="btn-primary">Nueva Unidad</a>
             </div>
           </div>
-
-          <!-- TABLE -->
           <div class="table-scroll">
-            <table class="data-table" id="unitsTable">
+            <table class="data-table">
               <thead>
                 <tr>
-                  <th>VIN</th>
-                  <th>Placa</th>
-                  <th>Marca / Modelo</th>
-                  <th>Cliente</th>
-                  <th>Subservicio</th>
-                  <th>Estado</th>
-                  <th>Garantía</th>
-                  <th>Fecha Ingreso</th>
-                  <th class="text-right">Acciones</th>
+                  <th>ITEM</th><th>FOLIO</th><th>AÑO</th><th>MES</th><th>BLOQUE</th><th>SEDE</th>
+                  <th>TIPO_CONVERSIÓN</th><th>CONCESIONARIA</th><th>ESTADO</th><th>VIN</th><th>PLACA</th>
+                  <th>MARCA</th><th>MODELO</th><th>TÉCNICO</th><th>COSTO</th><th>FACTURA</th><th>ESTADO_PAGO</th><th>FECHA_ENTREGA</th>
                 </tr>
               </thead>
               <tbody id="tableBody"></tbody>
             </table>
-            <div id="emptyState" class="empty-state hidden">
-              <svg width="48" height="48" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
-                  d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
-              </svg>
-              <p>No se encontraron unidades con los filtros aplicados.</p>
-            </div>
           </div>
-
-          <!-- FOOTER: Paginación -->
-          <div class="data-card-footer">
-            <span class="page-info">
-              Mostrando <strong id="countShown">0</strong> de <strong id="countTotal">0</strong> unidades
-            </span>
-            <div class="page-controls" id="pageControls"></div>
-          </div>
-
         </div>
-      </div><!-- /page-body -->
+      </div>
     </main>
-  </div><!-- /app-layout -->
-
-  <!-- MODAL ESTADO -->
-  <div class="modal-overlay hidden" id="modalEstado">
-    <div class="modal-box">
-      <div class="modal-header">
-        <div>
-          <div class="modal-title">Cambiar Estado</div>
-          <div class="modal-subtitle" id="modalEstadoSub">—</div>
-        </div>
-        <button class="modal-close" id="modalEstadoClose">
-          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-          </svg>
-        </button>
-      </div>
-
-      <div class="estado-grid">
-        <button class="btn-estado-opt" data-val="en_proceso">
-          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-          En Proceso
-        </button>
-        <button class="btn-estado-opt" data-val="revision">
-          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-              d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
-          </svg>
-          En Revisión
-        </button>
-        <button class="btn-estado-opt" data-val="finalizado">
-          <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
-          </svg>
-          Finalizado
-        </button>
-      </div>
-
-      <div class="finalizado-date-row" id="finalizadoDateRow">
-        <label for="fechaTerminoModal">Fecha de Término (activa garantía de 3 años)</label>
-        <input type="date" id="fechaTerminoModal" class="form-input" />
-      </div>
-
-      <div class="modal-error" id="modalEstadoError"></div>
-
-      <div class="modal-footer">
-        <button class="btn-secondary" id="modalEstadoCancel">Cancelar</button>
-        <button class="btn-primary" id="btnConfirmarEstado">Confirmar Cambio</button>
-      </div>
-    </div>
   </div>
-
   <script type="module" src="../js/dashboard.js"></script>
-  <script>
-    // Mostrar/ocultar Panel Admin según rol en sessionStorage
-    (function () {
-      const link = document.getElementById('link-admin');
-      if (!link) return;
-
-      function tryToggle() {
-        try {
-          const raw = sessionStorage.getItem('autogas_usuario');
-          if (!raw) return false;
-          const data = JSON.parse(raw);
-          const isAdmin = data && data.rol === 'admin';
-          link.classList.toggle('hidden', !isAdmin);
-          return true;
-        } catch {
-          link.classList.add('hidden');
-          return true;
-        }
-      }
-
-      if (tryToggle()) return;
-      let tries = 0;
-      const t = setInterval(() => {
-        tries++;
-        const done = tryToggle();
-        if (done || tries > 25) clearInterval(t);
-      }, 120);
-    })();
-  </script>
 </body>
-
 </html>
