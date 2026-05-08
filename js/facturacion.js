@@ -28,6 +28,7 @@ async function loadFacturas() {
   const snap = await getDocs(query(collection(db, 'facturas')));
   snap.forEach((d) => facturas.push({ id: d.id, ...d.data() }));
   renderTable();
+  renderKpis();
 }
 
 function renderTable() {
@@ -49,6 +50,15 @@ function renderTable() {
     await updateDoc(doc(db, 'facturas', btn.dataset.id), { estado: 'PAGADO' });
     loadFacturas();
   }));
+}
+
+function renderKpis() {
+  const pendientes = facturas.filter((f) => String(f.estado || '').toUpperCase() !== 'PAGADO');
+  const pagadas = facturas.filter((f) => String(f.estado || '').toUpperCase() === 'PAGADO');
+  const montoPend = pendientes.reduce((acc, f) => acc + Number(f.importeTotal || 0), 0);
+  setText('kpiPendMonto', montoPend.toLocaleString('es-PE'));
+  setText('kpiPendCant', pendientes.length);
+  setText('kpiPagadas', pagadas.length);
 }
 
 function bindModal() {
@@ -73,6 +83,10 @@ function showModal(show) {
 }
 
 function val(id) { return document.getElementById(id)?.value || ''; }
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = String(value);
+}
 function fmtDate(raw) {
   if (!raw) return '';
   const d = raw.toDate ? raw.toDate() : new Date(raw);

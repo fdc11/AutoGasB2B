@@ -191,7 +191,7 @@
   width: 100%;
   border-collapse: collapse;
   text-align: left;
-  min-width: 800px;
+  min-width: 1600px;
 }
 
 .data-table thead th {
@@ -222,7 +222,12 @@
 }
 
 .data-table tbody tr:hover {
-  background: #f8fafc;
+  background: linear-gradient(90deg, rgba(223, 4, 21, 0.04), rgba(223, 4, 21, 0));
+}
+
+.kpi-icon {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 700;
 }
 
 /* CELL STYLES */

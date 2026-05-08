@@ -19,16 +19,19 @@
       <div class="sidebar-footer"><button id="btnLogout" class="btn-logout">Cerrar Sesión</button></div>
     </aside>
     <main class="main-content">
-      <header class="topbar"><div class="topbar-left"><h1>Ficha de Unidad</h1><p id="topVin">—</p></div></header>
+      <header class="topbar">
+        <div class="topbar-left"><h1>Ficha de Unidad</h1><p id="topVin">—</p></div>
+        <div class="topbar-right"><a href="dashboard.html" class="btn-secondary">Volver</a></div>
+      </header>
       <div class="page-body">
         <div class="detail-card">
-          <div class="detail-card-header"><span class="detail-card-title">Snapshot operativo</span></div>
+          <div class="detail-card-header"><span class="detail-card-title">Snapshot operativo completo</span></div>
           <div class="detail-card-body">
             <pre id="snapshotView" style="white-space:pre-wrap;margin:0;"></pre>
           </div>
         </div>
         <div class="detail-card">
-          <div class="detail-card-header"><span class="detail-card-title">Historial de servicios</span></div>
+          <div class="detail-card-header"><span class="detail-card-title">Timeline / Historial de servicios</span></div>
           <div class="detail-card-body">
             <div id="timeline"></div>
             <div style="display:grid;gap:8px;margin-top:12px;">

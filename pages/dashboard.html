@@ -23,8 +23,17 @@
     <main class="main-content">
       <header class="topbar">
         <div class="topbar-left"><h1>CONTROL DE CONVERSIONES</h1><p>Seguimiento operativo AutoGas</p></div>
+        <div class="topbar-right">
+          <a href="registro.html" class="btn-primary">Nueva Unidad</a>
+        </div>
       </header>
       <div class="page-body">
+        <div class="kpi-grid">
+          <div class="kpi-card"><div class="kpi-icon brand">#</div><div class="kpi-body"><span class="kpi-value" id="kpiTotal">0</span><span class="kpi-label">Total Unidades</span></div></div>
+          <div class="kpi-card"><div class="kpi-icon blue">P</div><div class="kpi-body"><span class="kpi-value" id="kpiProceso">0</span><span class="kpi-label">En Proceso</span></div></div>
+          <div class="kpi-card"><div class="kpi-icon green">$</div><div class="kpi-body"><span class="kpi-value" id="kpiFacturado">0</span><span class="kpi-label">Con Factura</span></div></div>
+          <div class="kpi-card"><div class="kpi-icon red">!</div><div class="kpi-body"><span class="kpi-value" id="kpiPendientePago">0</span><span class="kpi-label">Pago Pendiente</span></div></div>
+        </div>
         <div class="data-card">
           <div class="data-card-header">
             <div class="filters-row">
@@ -37,7 +46,7 @@
             </div>
             <div style="display:flex;gap:8px;">
               <button id="btnExcel" class="btn-secondary">Exportar Excel</button>
-              <a href="registro.html" class="btn-primary">Nueva Unidad</a>
+              <a href="facturacion.html" class="btn-secondary">Ver Pendientes</a>
             </div>
           </div>
           <div class="table-scroll">

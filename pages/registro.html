@@ -19,9 +19,18 @@
       <div class="sidebar-footer"><button id="btnLogout" class="btn-logout">Cerrar Sesión</button></div>
     </aside>
     <main class="main-content">
-      <header class="topbar"><div class="topbar-left"><h1>Nueva Unidad</h1></div></header>
+      <header class="topbar">
+        <div class="topbar-left"><h1>Nueva Unidad</h1><p>Registro integral de conversiones</p></div>
+        <div class="topbar-right"><a href="dashboard.html" class="btn-secondary">Volver al Dashboard</a></div>
+      </header>
       <div class="page-body">
         <div class="form-card">
+          <div class="form-card-header">
+            <div>
+              <div class="form-card-title">Formulario maestro</div>
+              <div class="form-card-subtitle">Completa la ficha siguiendo el formato de control de conversiones</div>
+            </div>
+          </div>
           <div class="form-card-body">
             <form id="registroForm" class="form-grid">
               <input id="vin" class="form-input" maxlength="17" placeholder="VIN (17)" required />

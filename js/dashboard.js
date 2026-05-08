@@ -27,6 +27,7 @@ async function initDashboard() {
     allUnidades = [];
     snap.forEach((d) => allUnidades.push({ id: d.id, ...d.data() }));
     applyFilters();
+    updateKpis();
   });
 }
 
@@ -118,6 +119,17 @@ function renderTable() {
   tbody.querySelectorAll('tr[data-id]').forEach((tr) => tr.addEventListener('click', () => window.location.href = `unidad.html?id=${tr.dataset.id}`));
 }
 
+function updateKpis() {
+  const total = allUnidades.length;
+  const enProceso = allUnidades.filter((u) => ['EN PROCESO', 'EN REVISION'].includes(String(u.estado || '').toUpperCase())).length;
+  const conFactura = allUnidades.filter((u) => String(u.facturaNumero || '').trim()).length;
+  const pendientePago = allUnidades.filter((u) => String(u.estadoPago || '').toUpperCase().includes('PEND')).length;
+  setText('kpiTotal', total);
+  setText('kpiProceso', enProceso);
+  setText('kpiFacturado', conFactura);
+  setText('kpiPendientePago', pendientePago);
+}
+
 function exportExcel() {
   if (typeof XLSX === 'undefined') return;
   const rows = filteredList.map((u) => ({
@@ -138,4 +150,8 @@ function fmtDate(raw) {
   if (!raw) return '';
   const d = raw.toDate ? raw.toDate() : new Date(raw);
   return Number.isNaN(d.getTime()) ? '' : d.toLocaleDateString('es-PE');
+}
+function setText(id, value) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = String(value);
 }
