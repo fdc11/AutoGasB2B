@@ -1,0 +1,227 @@
+/* =============================================
+   AUTOGAS B2B — REGISTRO CSS
+   ============================================= */
+
+/* =============================================
+   FORM PAGE LAYOUT
+   ============================================= */
+.registro-body {
+  max-width: 860px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+/* =============================================
+   FORM CARD
+   ============================================= */
+.form-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+  overflow: hidden;
+  animation: fadeInUp 0.4s var(--ease) both;
+}
+
+.form-card-header {
+  background: linear-gradient(135deg, var(--brand) 0%, var(--brand-dark) 100%);
+  padding: 20px 28px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.form-card-header svg {
+  color: rgba(255,255,255,0.8);
+  flex-shrink: 0;
+}
+
+.form-card-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.3rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: #fff;
+  line-height: 1.1;
+}
+
+.form-card-subtitle {
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.7);
+  margin-top: 2px;
+}
+
+.form-card-body {
+  padding: 28px;
+}
+
+/* =============================================
+   FORM GRID
+   ============================================= */
+.form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px 24px;
+}
+
+.full-col {
+  grid-column: 1 / -1;
+}
+
+/* =============================================
+   VIN INPUT ESPECIAL
+   ============================================= */
+.vin-wrapper {
+  position: relative;
+}
+
+.vin-input {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  height: 48px;
+  padding-right: 60px;
+}
+
+.vin-counter {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--muted);
+  pointer-events: none;
+}
+
+.vin-counter.complete {
+  color: var(--success);
+}
+
+.vin-counter.over {
+  color: var(--danger);
+}
+
+.vin-decoder-info {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: var(--success);
+  font-weight: 500;
+}
+
+.vin-decoder-info.show { display: flex; }
+
+.vin-decoder-info svg { flex-shrink: 0; }
+
+.vin-error-info {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  margin-top: 8px;
+  padding: 8px 12px;
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  color: var(--danger);
+  font-weight: 500;
+}
+
+.vin-error-info.show { display: flex; }
+
+/* PLACA HELPER */
+.placa-helper {
+  font-size: 0.75rem;
+  color: var(--info);
+  margin-top: 5px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+/* =============================================
+   FORM SECTION DIVIDER
+   ============================================= */
+.form-section-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--brand);
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--brand-soft);
+  margin-bottom: 4px;
+}
+
+/* =============================================
+   FORM ACTIONS
+   ============================================= */
+.form-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 12px;
+  padding-top: 24px;
+  border-top: 1px solid var(--border);
+  margin-top: 8px;
+}
+
+.btn-submit {
+  height: 44px;
+  padding: 0 28px;
+  font-size: 0.95rem;
+}
+
+/* =============================================
+   ALERT MESSAGES
+   ============================================= */
+.alert-msg {
+  display: none;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.alert-msg.show { display: flex; }
+
+.alert-error {
+  background: var(--danger-bg);
+  border: 1px solid var(--danger-border);
+  color: var(--danger);
+}
+
+.alert-success {
+  background: var(--success-bg);
+  border: 1px solid var(--success-border);
+  color: var(--success);
+}
+
+/* =============================================
+   LOADING OVERLAY
+   ============================================= */
+.submit-spinner {
+  display: none;
+  width: 18px;
+  height: 18px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+.submit-spinner.show { display: block; }

@@ -1,0 +1,355 @@
+/* =============================================
+   AUTOGAS B2B — FACTURACIÓN CSS
+   ============================================= */
+
+/* =============================================
+   MONTH SELECTOR BAR
+   ============================================= */
+.fac-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.fac-selector-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.fac-selector-label {
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--muted);
+  white-space: nowrap;
+}
+
+#monthSelector {
+  height: 38px;
+  padding: 0 32px 0 12px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--text);
+  font-family: 'Barlow', sans-serif;
+  font-size: 0.88rem;
+  cursor: pointer;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg width='12' height='12' fill='none' viewBox='0 0 24 24' stroke='%236b7280'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M19 9l-7 7-7-7'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 10px center;
+  min-width: 200px;
+}
+
+#monthSelector:focus { outline: none; border-color: var(--brand); }
+#monthSelector option { background: #fff; color: var(--text); }
+
+/* =============================================
+   SUMMARY KPI CARDS (3 en fila)
+   ============================================= */
+.fac-kpi-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  animation: fadeInDown 0.4s var(--ease) both;
+}
+
+.fac-kpi-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 18px 20px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  transition: transform 0.22s var(--ease), box-shadow 0.22s var(--ease);
+}
+
+.fac-kpi-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 14px rgba(0,0,0,0.09);
+}
+
+.fac-kpi-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.fac-kpi-icon.brand  { background: var(--brand-soft); color: var(--brand); }
+.fac-kpi-icon.blue   { background: var(--info-bg);    color: var(--info); }
+.fac-kpi-icon.purple { background: #f5f3ff;            color: #7c3aed; }
+.fac-kpi-icon.green  { background: var(--success-bg); color: var(--success); }
+
+.fac-kpi-body { display: flex; flex-direction: column; }
+
+.fac-kpi-value {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.7rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1;
+  margin-bottom: 3px;
+}
+
+.fac-kpi-label {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-weight: 500;
+}
+
+/* =============================================
+   TABLA DETALLE DEL MES
+   ============================================= */
+.fac-table-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  overflow: hidden;
+  animation: fadeInUp 0.4s var(--ease) 0.1s both;
+}
+
+.fac-table-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  background: #f8fafc;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.fac-table-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+
+.fac-table-scroll {
+  overflow-x: auto;
+  max-height: 480px;
+  overflow-y: auto;
+}
+
+.fac-table-scroll::-webkit-scrollbar { width: 5px; height: 5px; }
+.fac-table-scroll::-webkit-scrollbar-track { background: var(--surface-2); }
+.fac-table-scroll::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+.fac-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  min-width: 900px;
+}
+
+.fac-table thead {
+  position: sticky;
+  top: 0;
+  z-index: 2;
+}
+
+.fac-table thead th {
+  padding: 10px 14px;
+  font-size: 0.67rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--muted);
+  background: #f8fafc;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.fac-table tbody td {
+  padding: 12px 14px;
+  font-size: 0.855rem;
+  border-bottom: 1px solid #f0f2f5;
+  color: var(--text);
+  vertical-align: middle;
+}
+
+.fac-table tbody tr:last-child td { border-bottom: none; }
+.fac-table tbody tr:hover { background: #f8fafc; }
+
+/* ROW TOTAL */
+.fac-table .total-row td {
+  background: #f0f7ff !important;
+  border-top: 2px solid var(--info-border);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.fac-table .total-row:hover td { background: #e8f3ff !important; }
+
+/* CELL HELPERS */
+.vin-monospace {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--text);
+}
+
+.placa-tag {
+  display: inline-block;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.04em;
+}
+
+.no-placa {
+  display: inline-block;
+  font-size: 0.68rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  padding: 2px 7px;
+  border-radius: 4px;
+  letter-spacing: 0.05em;
+}
+
+.cliente-group-header td {
+  background: var(--surface-2) !important;
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.85rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--brand);
+  padding: 8px 14px !important;
+  border-bottom: 1px solid var(--border) !important;
+}
+
+/* =============================================
+   FACTURAS SECTION
+   ============================================= */
+.facturas-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  overflow: hidden;
+  animation: fadeInUp 0.4s var(--ease) 0.15s both;
+}
+
+.facturas-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 20px;
+  border-bottom: 1px solid var(--border);
+  background: #f8fafc;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.facturas-list {
+  padding: 8px 0;
+}
+
+.factura-item {
+  display: flex;
+  align-items: center;
+  padding: 12px 20px;
+  border-bottom: 1px solid #f0f2f5;
+  gap: 14px;
+  transition: background 0.15s;
+}
+
+.factura-item:last-child { border-bottom: none; }
+.factura-item:hover { background: #f8fafc; }
+
+.factura-numero {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.82rem;
+  font-weight: 700;
+  color: var(--brand);
+  min-width: 110px;
+}
+
+.factura-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.factura-cliente {
+  font-weight: 600;
+  font-size: 0.88rem;
+  color: var(--text);
+}
+
+.factura-meta {
+  font-size: 0.75rem;
+  color: var(--muted);
+  margin-top: 1px;
+}
+
+.factura-total {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+  min-width: 100px;
+  text-align: right;
+}
+
+.badge-pendiente {
+  background: var(--warning-bg);
+  color: var(--warning);
+  border: 1px solid var(--warning-border);
+}
+
+.badge-cobrada {
+  background: var(--success-bg);
+  color: var(--success);
+  border: 1px solid var(--success-border);
+}
+
+.facturas-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  padding: 32px 20px;
+  color: var(--muted);
+  text-align: center;
+  font-size: 0.88rem;
+}
+
+/* =============================================
+   MODAL NUEVA FACTURA
+   ============================================= */
+.factura-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.factura-form label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-bottom: 5px;
+}

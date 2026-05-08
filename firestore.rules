@@ -1,0 +1,75 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function signedIn() {
+      return request.auth != null;
+    }
+
+    function userDoc() {
+      return get(/databases/$(database)/documents/usuarios/$(request.auth.uid)).data;
+    }
+
+    function isAdmin() {
+      return signedIn() && userDoc().rol == 'admin' && userDoc().activo == true;
+    }
+
+    function isOperario() {
+      return signedIn() && userDoc().rol == 'operario' && userDoc().activo == true;
+    }
+
+    function isAutoniza() {
+      return signedIn() && userDoc().rol == 'autoniza' && userDoc().activo == true;
+    }
+
+    function empresa() {
+      return userDoc().empresa;
+    }
+
+    // =========================
+    // UNIDADES
+    // =========================
+    match /unidades/{unidadId} {
+      allow read: if (isAdmin() || isOperario()) ||
+        (isAutoniza() && resource.data.cliente == empresa());
+
+      allow create, update, delete: if (isAdmin() || isOperario());
+    }
+
+    // =========================
+    // SERVICIOS
+    // =========================
+    match /servicios/{servicioId} {
+      allow read: if (isAdmin() || isOperario()) ||
+        (isAutoniza() &&
+          get(/databases/$(database)/documents/unidades/$(resource.data.unidadId)).data.cliente == empresa()
+        );
+
+      allow create, update, delete: if (isAdmin() || isOperario());
+    }
+
+    // =========================
+    // USUARIOS
+    // =========================
+    match /usuarios/{userId} {
+      // Necesario para que el frontend pueda leer su propio perfil post-login.
+      allow get: if signedIn() && request.auth.uid == userId;
+
+      // Admin/Operario pueden listar/leer usuarios (panel admin).
+      allow list, read: if (isAdmin() || isOperario());
+
+      // Nadie escribe usuarios excepto admin, y nadie puede editarse a sí mismo.
+      allow create: if isAdmin() && request.auth.uid != userId;
+      allow update, delete: if isAdmin() && request.auth.uid != userId;
+    }
+
+    // =========================
+    // FACTURAS (ya existe en app)
+    // =========================
+    match /facturas/{facturaId} {
+      allow read, write: if (isAdmin() || isOperario());
+    }
+  }
+}
+

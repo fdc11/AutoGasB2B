@@ -1,0 +1,326 @@
+/* =============================================
+   AUTOGAS B2B — UNIDAD CSS
+   ============================================= */
+
+/* =============================================
+   WARRANTY BANNER
+   ============================================= */
+.warranty-banner {
+  border-radius: 12px;
+  padding: 18px 24px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border: 1px solid;
+  animation: fadeInDown 0.4s var(--ease) both;
+  flex-wrap: wrap;
+}
+
+.warranty-banner.garantia-activa {
+  background: var(--success-bg);
+  border-color: var(--success-border);
+}
+
+.warranty-banner.por-vencer {
+  background: var(--warning-bg);
+  border-color: var(--warning-border);
+}
+
+.warranty-banner.garantia-vencida,
+.warranty-banner.sin-garantia {
+  background: var(--surface-2);
+  border-color: var(--border);
+}
+
+.warranty-banner.en-proceso {
+  background: var(--info-bg);
+  border-color: var(--info-border);
+}
+
+.warranty-icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.warranty-banner.garantia-activa .warranty-icon {
+  background: var(--success);
+  color: #fff;
+}
+
+.warranty-banner.por-vencer .warranty-icon {
+  background: var(--warning);
+  color: #fff;
+}
+
+.warranty-banner.garantia-vencida .warranty-icon,
+.warranty-banner.sin-garantia .warranty-icon {
+  background: var(--surface-3);
+  color: var(--muted);
+}
+
+.warranty-banner.en-proceso .warranty-icon {
+  background: var(--info);
+  color: #fff;
+}
+
+.warranty-text {
+  flex: 1;
+  min-width: 200px;
+}
+
+.warranty-text h2 {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.warranty-banner.garantia-activa .warranty-text h2 { color: var(--success); }
+.warranty-banner.por-vencer .warranty-text h2 { color: var(--warning); }
+.warranty-banner.garantia-vencida .warranty-text h2 { color: var(--muted); }
+.warranty-banner.sin-garantia .warranty-text h2 { color: var(--muted); }
+.warranty-banner.en-proceso .warranty-text h2 { color: var(--info); }
+
+.warranty-text p {
+  font-size: 0.85rem;
+  color: var(--muted);
+}
+
+.warranty-badges {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+/* =============================================
+   UNIDAD GRID
+   ============================================= */
+.unidad-grid {
+  display: grid;
+  grid-template-columns: 340px 1fr;
+  gap: 20px;
+  align-items: start;
+  animation: fadeInUp 0.4s var(--ease) 0.1s both;
+}
+
+/* =============================================
+   DETAIL CARD
+   ============================================= */
+.detail-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.05);
+  overflow: hidden;
+}
+
+.detail-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  background: #f8fafc;
+}
+
+.detail-card-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text);
+}
+
+.detail-card-body {
+  padding: 4px 0;
+}
+
+/* INFO ROW */
+.info-row {
+  display: flex;
+  padding: 11px 18px;
+  border-bottom: 1px solid #f0f2f5;
+  gap: 12px;
+  align-items: center;
+}
+
+.info-row:last-child { border-bottom: none; }
+
+.info-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  min-width: 110px;
+  flex-shrink: 0;
+}
+
+.info-value {
+  font-size: 0.88rem;
+  color: var(--text);
+  font-weight: 500;
+  flex: 1;
+}
+
+.info-value.mono {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  word-break: break-all;
+}
+
+.info-value.placa {
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.08em;
+  color: var(--text);
+}
+
+/* =============================================
+   TIMELINE
+   ============================================= */
+.timeline-list {
+  padding: 16px 18px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.timeline-item {
+  display: flex;
+  gap: 14px;
+  position: relative;
+  padding-bottom: 20px;
+}
+
+.timeline-item:last-child { padding-bottom: 0; }
+
+.timeline-item:not(:last-child)::before {
+  content: '';
+  position: absolute;
+  left: 11px;
+  top: 24px;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+
+.timeline-dot {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  border: 2px solid;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 0;
+  z-index: 1;
+}
+
+.timeline-dot.ok {
+  background: var(--success-bg);
+  border-color: var(--success);
+  color: var(--success);
+}
+
+.timeline-dot.process {
+  background: var(--warning-bg);
+  border-color: var(--warning);
+  color: var(--warning);
+}
+
+.timeline-dot.review {
+  background: var(--info-bg);
+  border-color: var(--info);
+  color: var(--info);
+}
+
+.timeline-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.timeline-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+.timeline-tipo {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--text);
+}
+
+.timeline-fecha {
+  font-size: 0.72rem;
+  color: var(--muted);
+  font-family: 'JetBrains Mono', monospace;
+  white-space: nowrap;
+}
+
+.timeline-desc {
+  font-size: 0.84rem;
+  color: var(--text-2);
+  line-height: 1.5;
+  margin-bottom: 4px;
+}
+
+.timeline-tecnico {
+  font-size: 0.75rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
+.timeline-empty {
+  padding: 28px 18px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+/* =============================================
+   MODAL EDICIÓN UNIDAD
+   ============================================= */
+.edit-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px 18px;
+}
+
+.edit-grid .full-col {
+  grid-column: 1 / -1;
+}
+
+/* Modal servicio */
+.svc-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.svc-form label {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  margin-bottom: 5px;
+}

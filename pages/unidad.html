@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoGas B2B — Ficha de Unidad</title>
+  <meta name="description" content="Ficha detallada de conversión vehicular GNV/GLP — AutoGas B2B" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/unidad.css" />
+</head>
+
+<body>
+  <div class="app-layout">
+
+    <!-- ======================== SIDEBAR ======================== -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-container">
+          <img src="../assets/img/AutoGasLogo2.png" alt="AutoGas Logo" class="sidebar-logo"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="logo-fallback" style="display:none;">AG</div>
+          <div class="logo-text">
+            <span class="logo-title">AUTOGAS</span>
+            <span class="logo-subtitle">B2B SYSTEM</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <span class="nav-section-label">Principal</span>
+        <a href="dashboard.html" class="nav-item">
+          <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          Dashboard
+        </a>
+        <a href="registro.html" class="nav-item">
+          <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Nueva Unidad
+        </a>
+
+        <span class="nav-section-label">Reportes</span>
+        <a href="facturacion.html" class="nav-item">
+          <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" />
+          </svg>
+          Facturación
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button id="btnLogout" class="btn-logout">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+          Cerrar Sesión
+        </button>
+      </div>
+    </aside>
+
+    <!-- ======================== MAIN ======================== -->
+    <main class="main-content">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1>Ficha de Unidad</h1>
+          <p id="topbarVin">Cargando...</p>
+        </div>
+        <div class="topbar-right">
+          <button class="btn-secondary hidden" id="btnEditarDatos">
+            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+            </svg>
+            Editar Datos
+          </button>
+          <a href="dashboard.html" class="btn-ghost">
+            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+            </svg>
+            Volver
+          </a>
+        </div>
+      </header>
+
+      <!-- PAGE BODY -->
+      <div class="page-body" id="pageBody">
+
+        <!-- LOADER -->
+        <div class="page-loader" id="pageLoader">
+          <svg width="32" height="32" fill="none" viewBox="0 0 24 24" stroke="var(--brand)" class="spin">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+          </svg>
+          <p>Cargando datos de la unidad...</p>
+        </div>
+
+        <!-- CONTENT (oculto hasta carga) -->
+        <div id="unidadContent" class="hidden" style="display:flex;flex-direction:column;gap:20px;">
+
+          <!-- WARRANTY BANNER -->
+          <div class="warranty-banner en-proceso" id="warrantyBanner">
+            <div class="warranty-icon" id="warrantyIcon">
+              <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+              </svg>
+            </div>
+            <div class="warranty-text">
+              <h2 id="warrantyTitle">Cargando...</h2>
+              <p id="warrantyDesc">—</p>
+            </div>
+            <div class="warranty-badges" id="warrantyBadges">
+              <span class="badge" id="badgeSub">—</span>
+              <span class="badge" id="badgeEstado">—</span>
+            </div>
+          </div>
+
+          <!-- GRID: DATOS + TIMELINE -->
+          <div class="unidad-grid">
+
+            <!-- COLUMNA IZQUIERDA: Datos -->
+            <div style="display:flex;flex-direction:column;gap:16px;">
+
+              <!-- Card: Vehículo -->
+              <div class="detail-card">
+                <div class="detail-card-header">
+                  <span class="detail-card-title">Datos del Vehículo</span>
+                </div>
+                <div class="detail-card-body">
+                  <div class="info-row">
+                    <span class="info-label">VIN</span>
+                    <span class="info-value mono" id="valVin">—</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Placa</span>
+                    <span class="info-value placa" id="valPlaca">—</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Marca</span>
+                    <span class="info-value" id="valMarca">—</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Modelo</span>
+                    <span class="info-value" id="valModelo">—</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Cliente</span>
+                    <span class="info-value" id="valCliente">—</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Subservicio</span>
+                    <span class="info-value" id="valSubservicio">—</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Card: Instalación -->
+              <div class="detail-card">
+                <div class="detail-card-header">
+                  <span class="detail-card-title">Datos de Instalación</span>
+                </div>
+                <div class="detail-card-body">
+                  <div class="info-row">
+                    <span class="info-label">Taller</span>
+                    <span class="info-value" id="valTaller">—</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Técnico</span>
+                    <span class="info-value" id="valTecnico">—</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Km Ingreso</span>
+                    <span class="info-value mono" id="valKm">—</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">F. Ingreso</span>
+                    <span class="info-value" id="valFechaIngreso">—</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">F. Término</span>
+                    <span class="info-value" id="valFechaTermino">—</span>
+                  </div>
+                  <div class="info-row">
+                    <span class="info-label">Garantía</span>
+                    <span class="info-value" id="valGarantia">—</span>
+                  </div>
+                  <div class="info-row" id="rowComentario" style="display:none;">
+                    <span class="info-label">Comentario</span>
+                    <span class="info-value" id="valComentario" style="color:var(--muted);font-size:0.82rem;">—</span>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- COLUMNA DERECHA: Historial -->
+            <div class="detail-card">
+              <div class="detail-card-header">
+                <span class="detail-card-title">Historial de Servicios</span>
+                <button class="btn-primary" id="btnAddService" style="height:32px;padding:0 12px;font-size:0.8rem;">
+                  <svg width="13" height="13" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+                  </svg>
+                  Agregar Servicio
+                </button>
+              </div>
+              <div class="timeline-list" id="serviceTimeline">
+                <!-- JS renderiza aquí -->
+              </div>
+            </div>
+
+          </div><!-- /unidad-grid -->
+        </div><!-- /unidadContent -->
+      </div><!-- /page-body -->
+    </main>
+  </div><!-- /app-layout -->
+
+  <!-- MODAL: EDITAR UNIDAD -->
+  <div class="modal-overlay hidden" id="modalEditar">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Editar Unidad</div>
+          <div class="modal-subtitle" id="modalEditarSub">VIN: —</div>
+        </div>
+        <button class="modal-close" id="modalEditarClose">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="edit-grid">
+        <div>
+          <label class="form-label">Placa</label>
+          <input type="text" id="editPlaca" class="form-input" style="text-transform:uppercase;font-family:'JetBrains Mono',monospace;" />
+        </div>
+        <div>
+          <label class="form-label">Marca</label>
+          <input type="text" id="editMarca" class="form-input" />
+        </div>
+        <div>
+          <label class="form-label">Modelo</label>
+          <input type="text" id="editModelo" class="form-input" />
+        </div>
+        <div>
+          <label class="form-label">Cliente</label>
+          <input type="text" id="editCliente" class="form-input" />
+        </div>
+        <div>
+          <label class="form-label">Subservicio</label>
+          <select id="editSubservicio" class="form-select">
+            <option value="Conversión a Gas GNV">Conversión a Gas GNV</option>
+            <option value="Conversión a Gas GLP">Conversión a Gas GLP</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Taller</label>
+          <select id="editTaller" class="form-select">
+            <option value="Autoniza Surquillo">Autoniza Surquillo</option>
+            <option value="Autoniza Callao">Autoniza Callao</option>
+            <option value="AutoGas Central">AutoGas Central</option>
+            <option value="AutoGas Norte">AutoGas Norte</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Técnico</label>
+          <input type="text" id="editTecnico" class="form-input" />
+        </div>
+        <div>
+          <label class="form-label">Kilometraje</label>
+          <input type="number" id="editKm" class="form-input" min="0" />
+        </div>
+        <div>
+          <label class="form-label">Estado</label>
+          <select id="editEstado" class="form-select">
+            <option value="en_proceso">En Proceso</option>
+            <option value="revision">En Revisión</option>
+            <option value="finalizado">Finalizado</option>
+          </select>
+        </div>
+        <div>
+          <label class="form-label">Fecha de Término</label>
+          <input type="date" id="editFechaTermino" class="form-input" />
+        </div>
+        <div class="full-col">
+          <label class="form-label">Comentario</label>
+          <textarea id="editComentario" class="form-input form-textarea" rows="3"></textarea>
+        </div>
+      </div>
+
+      <div class="modal-error" id="modalEditarError"></div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" id="modalEditarCancel">Cancelar</button>
+        <button class="btn-primary" id="btnGuardarEdicion">Guardar Cambios</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: AGREGAR SERVICIO -->
+  <div class="modal-overlay hidden" id="modalServicio">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Agregar Servicio</div>
+          <div class="modal-subtitle">Registra un mantenimiento o intervención</div>
+        </div>
+        <button class="modal-close" id="modalServicioClose">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="svc-form">
+        <div>
+          <label>Tipo de Servicio <span class="required">*</span></label>
+          <input type="text" id="svcTipo" class="form-input" placeholder="Ej. Revisión 1000km, Mantenimiento..." />
+        </div>
+        <div>
+          <label>Técnico Responsable</label>
+          <input type="text" id="svcTecnico" class="form-input" placeholder="Nombre del técnico" />
+        </div>
+        <div>
+          <label>Descripción / Observaciones</label>
+          <textarea id="svcDesc" class="form-input form-textarea" rows="3"
+            placeholder="Detalla el trabajo realizado..."></textarea>
+        </div>
+      </div>
+
+      <div class="modal-error" id="modalServicioError"></div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" id="modalServicioCancel">Cancelar</button>
+        <button class="btn-primary" id="btnGuardarServicio">Guardar Servicio</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../js/unidad.js"></script>
+</body>
+
+</html>

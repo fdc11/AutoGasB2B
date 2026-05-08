@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoGas B2B — Acceso</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap"
+    rel="stylesheet" />
+  <link rel="stylesheet" href="css/login.css" />
+</head>
+
+<body>
+
+  <div class="bg-layer"></div>
+  <div class="bg-grid"></div>
+  <div class="bg-line"></div>
+  <div class="bg-line-2"></div>
+
+  <div class="page">
+
+    <!-- PANEL IZQUIERDO -->
+    <div class="left">
+      <span class="brand-badge">● Red Nacional de Conversiones GNV / GLP</span>
+
+      <h1 class="hero-title">SISTEMA DE<br>SEGUIMIENTO<br><span class="accent">B2B</span></h1>
+
+      <p class="hero-sub">
+        Control en tiempo real de conversiones vehiculares.<br>
+        AutoGas × Autoniza.
+      </p>
+
+      <div class="stats-row">
+        <div class="stat">
+          <span class="stat-num" data-target="1200">0</span>
+          <span class="stat-label">Unidades convertidas</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" data-target="98">0</span>
+          <span class="stat-label">% Garantías activas</span>
+        </div>
+        <div class="stat">
+          <span class="stat-num" data-target="24">0</span>
+          <span class="stat-label">Hrs respuesta</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL DERECHO -->
+    <div class="right">
+      <div class="login-card">
+
+        <div class="login-logo">
+          <img src="assets/img/AutoGasLogo2.png" alt="AutoGas" class="logo-img"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="logo-fallback" style="display:none;">
+            <span class="logo-icon-text">AG</span>
+            <div class="logo-text-block">
+              <span class="logo-name">AUTOGAS</span>
+              <span class="logo-sub">B2B SYSTEM</span>
+            </div>
+          </div>
+        </div>
+
+        <h2 class="login-title">Iniciar sesión</h2>
+        <p class="login-desc">Accede con tu cuenta corporativa asignada.</p>
+
+        <div class="error-msg" id="errorMsg"></div>
+
+        <div class="form-group">
+          <label class="form-label" for="email">CORREO CORPORATIVO</label>
+          <input class="form-input" type="email" id="email" placeholder="usuario@autogas.pe" autocomplete="email" />
+        </div>
+
+        <div class="form-group">
+          <label class="form-label" for="password">CONTRASEÑA</label>
+          <div class="input-wrapper">
+            <input class="form-input" type="password" id="password" placeholder="••••••••"
+              autocomplete="current-password" />
+            <button class="toggle-pass" id="togglePass" type="button" aria-label="Mostrar contraseña">
+              <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" fill="none" viewBox="0 0 24 24"
+                stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M2.458 12C3.732 7.943 7.523 5 12 5c4.477 0 8.268 2.943 9.542 7-1.274 4.057-5.065 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+              </svg>
+            </button>
+          </div>
+        </div>
+
+        <button class="btn-login" id="btnLogin">
+          <span id="btnText">INGRESAR AL SISTEMA</span>
+          <span id="btnLoader" class="btn-loader hidden">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10" stroke-opacity="0.3" />
+              <path d="M12 2a10 10 0 0 1 10 10" class="spin-path" />
+            </svg>
+          </span>
+        </button>
+
+        <p class="login-footer">
+          ¿Problemas para acceder? Contacta a tu administrador AutoGas.
+        </p>
+
+      </div>
+    </div>
+
+  </div>
+
+  <script src="js/auth.js" type="module"></script>
+
+</body>
+
+</html>

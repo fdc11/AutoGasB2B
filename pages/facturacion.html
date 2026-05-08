@@ -1,0 +1,304 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AutoGas B2B — Facturación</title>
+  <meta name="description" content="Módulo de facturación mensual de conversiones GNV/GLP — AutoGas B2B" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Barlow:wght@300;400;500;600;700&family=Barlow+Condensed:wght@400;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../css/global.css" />
+  <link rel="stylesheet" href="../css/facturacion.css" />
+  <!-- SheetJS para exportar Excel -->
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.0/package/dist/xlsx.full.min.js"></script>
+</head>
+
+<body>
+  <div class="app-layout">
+
+    <!-- ======================== SIDEBAR ======================== -->
+    <aside class="sidebar">
+      <div class="sidebar-header">
+        <div class="logo-container">
+          <img src="../assets/img/AutoGasLogo2.png" alt="AutoGas Logo" class="sidebar-logo"
+            onerror="this.style.display='none';this.nextElementSibling.style.display='flex';" />
+          <div class="logo-fallback" style="display:none;">AG</div>
+          <div class="logo-text">
+            <span class="logo-title">AUTOGAS</span>
+            <span class="logo-subtitle">B2B SYSTEM</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="sidebar-nav">
+        <span class="nav-section-label">Principal</span>
+        <a href="dashboard.html" class="nav-item">
+          <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+          </svg>
+          Dashboard
+        </a>
+        <a href="registro.html" class="nav-item">
+          <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+          </svg>
+          Nueva Unidad
+        </a>
+
+        <span class="nav-section-label">Reportes</span>
+        <a href="facturacion.html" class="nav-item active">
+          <svg width="17" height="17" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" />
+          </svg>
+          Facturación
+        </a>
+      </nav>
+
+      <div class="sidebar-footer">
+        <button id="btnLogout" class="btn-logout">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+              d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+          </svg>
+          Cerrar Sesión
+        </button>
+      </div>
+    </aside>
+
+    <!-- ======================== MAIN ======================== -->
+    <main class="main-content">
+
+      <!-- TOPBAR -->
+      <header class="topbar">
+        <div class="topbar-left">
+          <h1>Facturación Mensual</h1>
+          <p>Resumen de conversiones y facturación por cliente</p>
+        </div>
+        <div class="topbar-right">
+          <button id="btnNuevaFactura" class="btn-primary">
+            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
+            </svg>
+            Nueva Factura
+          </button>
+          <button id="btnExcelFac" class="btn-secondary">
+            <svg width="15" height="15" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+            Exportar Excel
+          </button>
+        </div>
+      </header>
+
+      <!-- PAGE BODY -->
+      <div class="page-body">
+
+        <!-- SELECTOR DE MES -->
+        <div class="fac-controls">
+          <div class="fac-selector-group">
+            <span class="fac-selector-label">Período:</span>
+            <select id="monthSelector"></select>
+          </div>
+          <div style="font-size:0.8rem;color:var(--muted);" id="facSubtitle">
+            Cargando datos...
+          </div>
+        </div>
+
+        <!-- KPI CARDS -->
+        <div class="fac-kpi-grid">
+          <div class="fac-kpi-card">
+            <div class="fac-kpi-icon brand">
+              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+            </div>
+            <div class="fac-kpi-body">
+              <span class="fac-kpi-value" id="kpiMonto">S/ —</span>
+              <span class="fac-kpi-label">Monto Total del Mes</span>
+            </div>
+          </div>
+          <div class="fac-kpi-card">
+            <div class="fac-kpi-icon blue">
+              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M13 10V3L4 14h7v7l9-11h-7z" />
+              </svg>
+            </div>
+            <div class="fac-kpi-body">
+              <span class="fac-kpi-value" id="kpiGNV">—</span>
+              <span class="fac-kpi-label">Conversiones GNV</span>
+            </div>
+          </div>
+          <div class="fac-kpi-card">
+            <div class="fac-kpi-icon purple">
+              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M17.657 18.657A8 8 0 016.343 7.343S7 9 9 10c0-2 .5-5 2.986-7C14 5 16.09 5.777 17.656 7.343A7.975 7.975 0 0120 13a7.975 7.975 0 01-2.343 5.657z" />
+              </svg>
+            </div>
+            <div class="fac-kpi-body">
+              <span class="fac-kpi-value" id="kpiGLP">—</span>
+              <span class="fac-kpi-label">Conversiones GLP</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABLA DETALLADA DEL MES -->
+        <div class="fac-table-card">
+          <div class="fac-table-header">
+            <span class="fac-table-title" id="tableTitle">Unidades del Mes</span>
+            <div style="display:flex;gap:8px;">
+              <span style="font-size:0.8rem;color:var(--muted);display:flex;align-items:center;gap:6px;">
+                <span class="badge badge-gnv">GNV</span> Gas Natural
+              </span>
+              <span style="font-size:0.8rem;color:var(--muted);display:flex;align-items:center;gap:6px;">
+                <span class="badge badge-glp">GLP</span> Gas Licuado
+              </span>
+            </div>
+          </div>
+
+          <div class="fac-table-scroll">
+            <table class="fac-table" id="facTable">
+              <thead>
+                <tr>
+                  <th>N°</th>
+                  <th>VIN</th>
+                  <th>Placa</th>
+                  <th>Marca / Modelo</th>
+                  <th>Cliente</th>
+                  <th>Subservicio</th>
+                  <th>F. Ingreso</th>
+                  <th>F. Término</th>
+                  <th>Estado</th>
+                  <th>Km</th>
+                  <th>Técnico</th>
+                </tr>
+              </thead>
+              <tbody id="facTableBody">
+                <tr>
+                  <td colspan="11" style="text-align:center;padding:40px;color:var(--muted);">
+                    Cargando datos...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div style="padding:10px 20px;border-top:1px solid var(--border);background:#f8fafc;font-size:0.8rem;color:var(--muted);">
+            <span id="facTableCount">0 unidades</span>
+          </div>
+        </div>
+
+        <!-- FACTURAS EMITIDAS -->
+        <div class="facturas-card">
+          <div class="facturas-header">
+            <span class="fac-table-title">Facturas Emitidas</span>
+            <span style="font-size:0.8rem;color:var(--muted);" id="facturasSubtitle">Mes seleccionado</span>
+          </div>
+          <div class="facturas-list" id="facturasList">
+            <div class="facturas-empty">
+              <svg width="36" height="36" fill="none" viewBox="0 0 24 24" stroke="currentColor" style="opacity:0.25;">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5"
+                  d="M9 14l6-6m-5.5.5h.01m4.99 5h.01M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16l3.5-2 3.5 2 3.5-2 3.5 2z" />
+              </svg>
+              No hay facturas emitidas para este período.
+            </div>
+          </div>
+        </div>
+
+      </div><!-- /page-body -->
+    </main>
+  </div><!-- /app-layout -->
+
+  <!-- MODAL: NUEVA FACTURA -->
+  <div class="modal-overlay hidden" id="modalFactura">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title">Nueva Factura</div>
+          <div class="modal-subtitle" id="modalFacturaSub">—</div>
+        </div>
+        <button class="modal-close" id="modalFacturaClose">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+
+      <div class="factura-form">
+        <div>
+          <label>Número de Factura</label>
+          <input type="text" id="facNumero" class="form-input" readonly
+            style="font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--brand);" />
+        </div>
+        <div>
+          <label>Cliente <span class="required">*</span></label>
+          <input type="text" id="facCliente" class="form-input" placeholder="Nombre del cliente..." />
+        </div>
+        <div>
+          <label>Fecha de Emisión</label>
+          <input type="date" id="facFechaEmision" class="form-input" />
+        </div>
+        <div>
+          <label>Fecha de Cobro</label>
+          <input type="date" id="facFechaCobro" class="form-input" />
+        </div>
+        <div>
+          <label>Monto Total (S/)</label>
+          <input type="number" id="facMonto" class="form-input" min="0" step="0.01" placeholder="0.00" />
+        </div>
+        <div>
+          <label>Estado</label>
+          <select id="facEstado" class="form-select">
+            <option value="pendiente">Pendiente</option>
+            <option value="cobrada">Cobrada</option>
+          </select>
+        </div>
+        <div>
+          <label>Notas</label>
+          <textarea id="facNotas" class="form-input form-textarea" rows="2"
+            placeholder="Observaciones opcionales..."></textarea>
+        </div>
+      </div>
+
+      <div class="modal-error" id="modalFacturaError"></div>
+
+      <div class="modal-footer">
+        <button class="btn-secondary" id="modalFacturaCancel">Cancelar</button>
+        <button class="btn-primary" id="btnGuardarFactura">Crear Factura</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: DETALLE FACTURA -->
+  <div class="modal-overlay hidden" id="modalDetalleFactura">
+    <div class="modal-box modal-lg">
+      <div class="modal-header">
+        <div>
+          <div class="modal-title" id="detFacturaTitulo">FAC-2026-001</div>
+          <div class="modal-subtitle" id="detFacturaSub">—</div>
+        </div>
+        <button class="modal-close" id="modalDetalleClose">
+          <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+      <div id="detFacturaBody" style="min-height:60px;"></div>
+      <div class="modal-footer">
+        <button class="btn-secondary" id="modalDetalleCancel">Cerrar</button>
+        <button class="btn-primary" id="btnMarcarCobrada">Marcar como Cobrada</button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module" src="../js/facturacion.js"></script>
+</body>
+
+</html>
